@@ -23,6 +23,11 @@
     <allow pkg="org.bukkit"/>
   </subpackage>
 
+  <subpackage name="canarymod">
+    <allow pkg="net.canarymod"/>
+    <allow pkg="net.visualillusionsent.utils"/>
+  </subpackage>
+
   <subpackage name="wepif">
     <allow pkg="org.bukkit"/>
     <allow pkg="de.bananaco"/>

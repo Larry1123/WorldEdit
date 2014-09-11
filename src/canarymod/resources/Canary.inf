@@ -1,0 +1,4 @@
+main-class=com.sk89q.canarymod.CanaryWorldEdit
+author=sk89q - CanaryMod implementation: damagefilter, Dark_Arc, Larry1123
+version=6.0.0
+name=WorldEdit

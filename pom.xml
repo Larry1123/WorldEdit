@@ -649,6 +649,79 @@
 
     <!--
     =====================================
+      Canarymod Build
+    =====================================
+    -->
+      <profile>
+          <id>canarymod</id>
+
+          <activation>
+              <property>
+                  <name>!skipCanaryProfile</name>
+              </property>
+          </activation>
+
+          <repositories>
+              <repository>
+                  <id>vi-repo</id>
+                  <name>Visual Illusions Repository</name>
+                  <url>http://repo.visualillusionsent.net/repository/public/</url>
+              </repository>
+          </repositories>
+
+          <dependencies>
+              <!-- CanaryLib -->
+              <dependency>
+                  <groupId>net.canarymod</groupId>
+                  <artifactId>CanaryLib</artifactId>
+                  <version>1.1.0-SNAPSHOT</version>
+                  <scope>compile</scope>
+                  <type>jar</type>
+                  <optional>true</optional>
+              </dependency>
+          </dependencies>
+
+          <build>
+              <resources>
+                  <!-- Canary Canary.inf -->
+                  <resource>
+                      <targetPath>.</targetPath>
+                      <filtering>true</filtering>
+                      <directory>${basedir}/src/canarymod/resources/</directory>
+                      <includes>
+                          <include>Canary.inf</include>
+                      </includes>
+                  </resource>
+              </resources>
+
+              <plugins>
+                  <!-- Add source folder -->
+                  <plugin>
+                      <groupId>org.codehaus.mojo</groupId>
+                      <artifactId>build-helper-maven-plugin</artifactId>
+                      <version>1.7</version>
+                      <executions>
+                          <execution>
+                              <id>add-sources</id>
+                              <phase>generate-sources</phase>
+                              <goals>
+                                  <goal>add-source</goal>
+                              </goals>
+                              <configuration>
+                                  <sources>
+                                      <source>${basedir}/src/canarymod/java</source>
+                                  </sources>
+                              </configuration>
+                          </execution>
+                          <!-- TODO add test -->
+                      </executions>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
+
+    <!--
+    =====================================
       Disable doclint on Java 8
     =====================================
     -->
