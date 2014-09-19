@@ -81,6 +81,13 @@ public class CanaryConfiguration extends LocalConfiguration {
     }
 
     /**
+     * Save the config
+     */
+    public void save() {
+        properties.save();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

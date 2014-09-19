@@ -341,22 +341,28 @@ public class CanaryWorld extends AbstractWorld {
         return new LazyBlock(block.getTypeId(), block.getData(), this, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BaseBiome getBiome(Vector2D position) {
         return new BaseBiome(getHandle().getBiome(position.getBlockX(), position.getBlockZ()).getBiomeType().getId());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<? extends Entity> getEntities(Region region) {
         World world = getHandle();
 
         List<com.sk89q.worldedit.entity.Entity> entities = new ArrayList<Entity>();
         for (Vector2D pt : region.getChunks()) {
-            if (!world.isChunkLoaded(pt.getBlockX(), pt.getBlockZ())) {
+            Chunk chunk = world.getChunk(pt.getBlockX(), pt.getBlockZ());
+            if (!chunk.isLoaded()) {
                 continue;
             }
-
-            final List<net.canarymod.api.entity.Entity>[] ents = world.getChunk(pt.getBlockX(), pt.getBlockZ()).getEntityLists();
+            final List<net.canarymod.api.entity.Entity>[] ents = chunk.getEntityLists();
             for (List<net.canarymod.api.entity.Entity> entLs : ents) {
                 for (net.canarymod.api.entity.Entity ent : entLs) {
                     if (region.contains(CanaryAdapter.toVector(ent.getPosition()))) {
@@ -384,12 +390,24 @@ public class CanaryWorld extends AbstractWorld {
 
     /**
      * {@inheritDoc}
+     *
+     * This is likely to return null all the time see {@link CanaryEntity#getState()}
      */
     @Nullable
     @Override
     public com.sk89q.worldedit.entity.Entity createEntity(com.sk89q.worldedit.util.Location location, BaseEntity entity) {
-        net.canarymod.api.entity.Entity entityC = Canary.factory().getEntityFactory().newEntity(entity.getTypeId(), CanaryAdapter.adapt(location));
-        entityC.setNBT(CanaryAdapter.adapt(entity.getNbtData()));
+        net.canarymod.api.entity.Entity entityC = Canary.factory().getEntityFactory().newEntity(entity.getTypeId(), CanaryAdapter.adapt(this));
+        if (entityC == null) {
+            return null;
+        }
+        if (entity.getNbtData() != null) {
+            entityC.setNBT(CanaryAdapter.adapt(entity.getNbtData()));
+        }
+        entityC.setX(location.getX());
+        entityC.setY(location.getY());
+        entityC.setZ(location.getZ());
+        entityC.setPitch(location.getPitch());
+        entityC.setRotation(location.getYaw());
         entityC.spawn();
         return new CanaryEntity(entityC);
     }

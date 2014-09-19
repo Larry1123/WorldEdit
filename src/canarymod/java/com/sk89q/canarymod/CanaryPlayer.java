@@ -680,7 +680,6 @@ public class CanaryPlayer implements Actor, com.sk89q.worldedit.entity.Player, C
     @Nullable
     @Override
     public BaseEntity getState() {
-        // TODO
         throw new UnsupportedOperationException("Cannot create a state from this object");
     }
 

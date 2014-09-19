@@ -45,26 +45,13 @@ public class CanaryEntity implements Entity {
     }
 
     /**
-     * {@inheritDoc}
+     * NOPE!
+     * Sorry but can't do this as removing and respawning just does not work, not everything is stored in NBT...
      */
     @Nullable
     @Override
     public BaseEntity getState() {
-        net.canarymod.api.entity.Entity entity = entityRef.get();
-        if (entity != null) {
-            if (entity.isPlayer()) {
-                return null;
-            }
-            if (entity.getNBT() == null) {
-                return new BaseEntity("" + entity.getID());
-            }
-            else {
-                return new BaseEntity("" + entity.getID(), CanaryAdapter.adapt(entity.getNBT()));
-            }
-        }
-        else {
             return null;
-        }
     }
 
     /**

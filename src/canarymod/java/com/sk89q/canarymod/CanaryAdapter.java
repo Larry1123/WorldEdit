@@ -114,8 +114,7 @@ final class CanaryAdapter {
      */
     public static Location adapt(net.canarymod.api.world.position.Location location) {
         checkNotNull(location);
-        Vector position = toVector(location);
-        return new com.sk89q.worldedit.util.Location(adapt(location.getWorld()), position, location.getRotation(), location.getPitch());
+        return new com.sk89q.worldedit.util.Location(adapt(location.getWorld()), location.getX(), location.getY(), location.getZ(), location.getRotation(), location.getPitch());
     }
 
     /**
@@ -143,6 +142,20 @@ final class CanaryAdapter {
         checkNotNull(world);
         checkNotNull(position);
         return new net.canarymod.api.world.position.Location(world, position.getX(), position.getY(), position.getZ(), 0, 0);
+    }
+
+    /**
+     * Create a Canary location from a WorldEdit location with a Canary world.
+     *
+     * @param world    the WorldEdit world
+     * @param location the WorldEdit location
+     *
+     * @return a Canary location
+     */
+    public static net.canarymod.api.world.position.Location adapt(World world, Location location) {
+        checkNotNull(world);
+        checkNotNull(location);
+        return new net.canarymod.api.world.position.Location(adapt(world), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     /**
@@ -340,42 +353,75 @@ final class CanaryAdapter {
     }
 
     protected static com.sk89q.jnbt.ListTag adaptBaseTag(ListIterator<? extends BaseTag> tagList) {
-        ListTagBuilder listTagBuilder = ListTagBuilder.create(null);
+        ListTagBuilder listTagBuilder = null;
         while (tagList.hasNext()) {
             net.canarymod.api.nbt.BaseTag tag = tagList.next();
             switch (NBTTagType.getTypeFromId(tag.getTypeId())) {
                 case BYTE:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.ByteTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.ByteTag(((net.canarymod.api.nbt.ByteTag) tag).getValue()));
                     break;
                 case BYTE_ARRAY:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.ByteArrayTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.ByteArrayTag(((net.canarymod.api.nbt.ByteArrayTag) tag).getValue()));
                     break;
                 case DOUBLE:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.DoubleTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.DoubleTag(((net.canarymod.api.nbt.DoubleTag) tag).getValue()));
                     break;
                 case FLOAT:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.FloatTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.FloatTag(((net.canarymod.api.nbt.FloatTag) tag).getValue()));
                     break;
                 case INT:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create( com.sk89q.jnbt.IntTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.IntTag(((net.canarymod.api.nbt.IntTag) tag).getValue()));
                     break;
                 case INT_ARRAY:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.IntArrayTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.IntArrayTag(((net.canarymod.api.nbt.IntArrayTag) tag).getValue()));
                     break;
                 case LIST:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.ListTag.class);
+                    }
                     // Hey look a Loop!
                     listTagBuilder.add(adaptBaseTag(((net.canarymod.api.nbt.ListTag) tag).listIterator()));
                     break;
                 case LONG:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.LongTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.LongTag(((net.canarymod.api.nbt.LongTag) tag).getValue()));
                     break;
                 case SHORT:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.ShortTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.ShortTag(((net.canarymod.api.nbt.ShortTag) tag).getValue()));
                     break;
                 case STRING:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.StringTag.class);
+                    }
                     listTagBuilder.add(new com.sk89q.jnbt.StringTag(((net.canarymod.api.nbt.StringTag) tag).getValue()));
                     break;
                 case COMPOUND:
+                    if (listTagBuilder == null) {
+                        listTagBuilder = ListTagBuilder.create(com.sk89q.jnbt.CompoundTag.class);
+                    }
                     listTagBuilder.add(adapt(((net.canarymod.api.nbt.CompoundTag) tag)));
                     break;
                 case ANY_NUMERIC:

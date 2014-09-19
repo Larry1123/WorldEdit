@@ -28,6 +28,7 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.event.platform.CommandEvent;
 import com.sk89q.worldedit.event.platform.CommandSuggestionEvent;
 import com.sk89q.worldedit.extension.platform.*;
+import com.sk89q.worldedit.util.command.CommandMapping;
 import com.sk89q.worldedit.util.command.Dispatcher;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -55,6 +56,7 @@ public class CanaryServer extends AbstractPlatform implements MultiUserPlatform 
         this.plugin = plugin;
         config = new CanaryConfiguration(plugin.logger, plugin.getConfig());
         config.load();
+        config.save();
     }
 
     /**
