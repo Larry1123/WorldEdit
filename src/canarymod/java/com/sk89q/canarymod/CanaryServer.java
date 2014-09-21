@@ -28,7 +28,6 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.event.platform.CommandEvent;
 import com.sk89q.worldedit.event.platform.CommandSuggestionEvent;
 import com.sk89q.worldedit.extension.platform.*;
-import com.sk89q.worldedit.util.command.CommandMapping;
 import com.sk89q.worldedit.util.command.Dispatcher;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -377,6 +376,11 @@ public class CanaryServer extends AbstractPlatform implements MultiUserPlatform 
             @Override
             public String tabCompleteMethod() {
                 return "";
+            }
+
+            @Override
+            public int version() {
+                return 1;
             }
         };
         return cmd;
