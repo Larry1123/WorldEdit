@@ -374,15 +374,11 @@ public class CanaryServer extends AbstractPlatform implements MultiUserPlatform 
             }
 
             @Override
-            public String tabCompleteMethod() {
-                return "";
-            }
-
-            @Override
             public int version() {
                 return 1;
             }
         };
+
         return cmd;
     }
 
